@@ -47,7 +47,7 @@ def average_feature_importance(feat_importances):
 ###### Classifier:
 ##################
 
-def evaluate_rf_classifier(y_true, y_pred, probas):
+def evaluate_classifier(y_true, y_pred, probas):
     ''' calculate evaluation metrics for y_true, y_pred, and probas_ (probability of the positive class) '''
     pr_score = metrics.precision_score(y_true, y_pred)
     rc_score = metrics.recall_score(y_true, y_pred)
@@ -80,7 +80,7 @@ def evaluate_rf_classifier(y_true, y_pred, probas):
 ###### Regressor:
 #################
 
-def evaluate_rf_regressor(y_true, y_pred):
+def evaluate_regressor(y_true, y_pred):
     r2 = metrics.r2_score(y_true, y_pred)
     explained_variance = metrics.explained_variance_score(y_true, y_pred)
     mean_absolute_error = metrics.mean_absolute_error(y_true, y_pred)

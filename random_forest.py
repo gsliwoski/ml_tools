@@ -126,8 +126,8 @@ def run_rf(X_mat, y_labels, params, regressor):
             # Classifier metrics
             probas_test = rf_model.predict_proba(X_mat.iloc[test_ind])[:,1]
             probas_train = rf_model.predict_proba(X_mat.iloc[train_ind])[:,1]
-            test_results = evaluate_rf_classifier(y_labels.iloc[test_ind], y_pred_test, probas_test)
-            train_results = evaluate_rf_classifier(y_labels.iloc[train_ind], y_pred_train, probas_train)
+            test_results = evaluate_classifier(y_labels.iloc[test_ind], y_pred_test, probas_test)
+            train_results = evaluate_classifier(y_labels.iloc[train_ind], y_pred_train, probas_train)
 
             # ROC
             storage_vars['roc'].append(test_results['roc'])
@@ -145,8 +145,8 @@ def run_rf(X_mat, y_labels, params, regressor):
             dfcols = [x for x in classifier_metrics if x not in ['recall','precision','tpr','fpr']]
         else:
             # Regressor metrics
-            test_results = evaluate_rf_regressor(y_labels.iloc[test_ind], y_pred_test)
-            train_results = evaluate_rf_regressor(y_labels.iloc[train_ind], y_pred_train)
+            test_results = evaluate_regressor(y_labels.iloc[test_ind], y_pred_test)
+            train_results = evaluate_regressor(y_labels.iloc[train_ind], y_pred_train)
             
             # Metrics
             storage_vars['r2'].append(test_results['r2'])
@@ -181,7 +181,7 @@ def run_rf(X_mat, y_labels, params, regressor):
 
 if __name__ == "__main__":
 
-    features, labels, parameters, model_type, noopt, outfiles, model_id = IO.initialize()
+    features, labels, parameters, model_type, noopt, outfiles, model_id = IO.initialize('rf')
     
     # load data
     # train and test

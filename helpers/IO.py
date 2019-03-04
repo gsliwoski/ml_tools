@@ -14,20 +14,33 @@ import estimator_plots
 
 # Default parameters for RF classifier
 default_class_parameters = {
-                            'max_depth': 10,
-                            'class_weight': 'balanced',
-                            'test_size': 0.2,
-                            'train_size': 0.8,
-                            'n_splits': 10,
-                            'n_estimators': 10
+                            'rf':
+                                {
+                                'max_depth': 10,
+                                'class_weight': 'balanced',
+                                'test_size': 0.2,
+                                'train_size': 0.8,
+                                'n_splits': 10,
+                                'n_estimators': 10
+                                },
+                            'ann':
+                                  {
+                                  }
                             }
+                            
 # Default parameters for RF Regressor
 default_reg_parameters = {
-                          'max_depth': 10,
-                          'test_size': 0.2,
-                          'train_size': 0.8,
-                          'n_splits': 10,
-                          'n_estimators': 10
+                          'rf':
+                              {
+                              'max_depth': 10,
+                              'test_size': 0.2,
+                              'train_size': 0.8,
+                              'n_splits': 10,
+                              'n_estimators': 10
+                              },
+                          'ann':
+                               {
+                               }
                           }
 ###########
 ## INPUT ##
@@ -36,7 +49,8 @@ default_reg_parameters = {
 ROOTDIR = "/dors/capra_lab/users/sliwosgr/ml_tools/"
 DATE = datetime.now().strftime('%Y-%m-%d')
 
-def initialize(noopt=False):
+# learner = 'ann' or 'rf' for random forest
+def initialize(learner):
     parser = argparse.ArgumentParser(description='train classifier with params provided and report performance.')
     parser.add_argument('--sampleid', '-s', action='store', type=str, default='sid',
                         help='name of the id column that is unique for each row and is used to join features and labels. Default: sid')
@@ -83,9 +97,9 @@ def initialize(noopt=False):
 
     # Add any missing default parameters:
     if results.regressor:   
-        parameters = default_reg_parameters
+        parameters = default_reg_parameters[learner]
     else:
-        parameters = default_class_parameters
+        parameters = default_class_parameters[learner]
     parameters.update(loaded_parameters)        
 
     # Add the random state if there is one
@@ -125,17 +139,17 @@ def initialize(noopt=False):
 
     # Define output files
     outfiles = {
-                'ROC_FIG_FILE': "roc{}{}.png",
-                'PR_FIG_FILE': "pr{}{}.png",
-                'FEAT_IMPORT_FILE': "feature_importance{}{}.tab",
-                'FEATURE_FIG_FILE': "feature_importance_plot{}{}.png",
-                'PREDICTIONS_FILE': "predictions{}{}.tab",
-                'TRAIN_METRIC_DF_FILE': "train_metrics{}{}.tab",
-                'TEST_METRIC_DF_FILE': "test_metrics{}{}.tab",
+                'ROC_FIG_FILE': "roc{}{}{}.png",
+                'PR_FIG_FILE': "pr{}{}{}.png",
+                'FEAT_IMPORT_FILE': "feature_importance{}{}{}.tab",
+                'FEATURE_FIG_FILE': "feature_importance_plot{}{}{}.png",
+                'PREDICTIONS_FILE': "predictions{}{}{}.tab",
+                'TRAIN_METRIC_DF_FILE': "train_metrics{}{}{}.tab",
+                'TEST_METRIC_DF_FILE': "test_metrics{}{}{}.tab",
                 'OUTPUT_DIR': output_dir
                 }
     for x in outfiles:
-        outfiles[x] = os.path.join(output_dir,outfiles[x].format(oc, output_suffix))
+        outfiles[x] = os.path.join(output_dir,outfiles[x].format("_{}".format(learner), oc, output_suffix))
     outfiles["PERFORMANCE_FILE"] = os.path.join(output_dir,"{}_performance.log".format(model_type))
 
     # Load the labels and features
