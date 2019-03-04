@@ -39,13 +39,13 @@ DATE = datetime.now().strftime('%Y-%m-%d')
 def initialize(noopt=False):
     parser = argparse.ArgumentParser(description='train classifier with params provided and report performance.')
     parser.add_argument('--sampleid', '-s', action='store', type=str, default='sid',
-                        help='name of the id column that is unique for each row and is used to join features and labels')
+                        help='name of the id column that is unique for each row and is used to join features and labels. Default: sid')
     parser.add_argument('--features','-f', action='store', type=str, required=True,
                         help='tsv file containing features includes sample id column and 1 or more feature columns')
     parser.add_argument('--labels', '-l', action='store', type=str, required=True,
                         help='tsv file containing labels includes sample id column and 1 or more label columns')
     parser.add_argument('--label_column', '-c', action='store', type=str, default='label',
-                        help='column header for label of interest found in only label file')
+                        help='column header for label of interest found in only label file. Default: label')
     parser.add_argument('--params','-p', action='store', type=str, default=None,
                         help='file with custom parameters, one per line, param_name: param_value. If not provided uses defaults')
     parser.add_argument('--grid','-g', action='store', type=str, default=None,
@@ -53,11 +53,11 @@ def initialize(noopt=False):
     parser.add_argument('--output','-o', action='store', type=str, default=None,
                         help='output suffix. Default is paramfilename_labelfilename_classifiertype')
     parser.add_argument('--outpath', '-i', action='store', type=str, default='output/',
-                        help='path to write output files to')
+                        help='path to write output files to. Default: output/')
     parser.add_argument('--regressor', '-r', action='store_true', help='indicate classifier is regressor rather than classifier')
     parser.add_argument('--date', '-d', action='store_true', help='attach date to output suffix')
     parser.add_argument('--random_state', '-x', action='store', type=int, default=32,
-                        help='set a random seed, if below 0, does not set a random seed. Does not override if set in params file')
+                        help='set a random seed, if below 0, does not set a random seed. Does not override if set in params file. Default: 32')
     
 
     # Initialization checks
