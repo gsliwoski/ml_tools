@@ -12,36 +12,41 @@ import estimator_plots
 ## DEFAULTS ##
 ##############
 
-# Default parameters for RF classifier
+# Default parameters for classifier
 default_class_parameters = {
                             'rf':
                                 {
                                 'max_depth': 10,
                                 'class_weight': 'balanced',
-                                'test_size': 0.2,
-                                'train_size': 0.8,
-                                'n_splits': 10,
                                 'n_estimators': 10
                                 },
                             'ann':
                                   {
+                                  'hidden_layer_sizes': (50,),
+                                  'solver': 'lbfgs'
                                   }
                             }
                             
-# Default parameters for RF Regressor
+# Default parameters for Regressor
 default_reg_parameters = {
                           'rf':
                               {
                               'max_depth': 10,
-                              'test_size': 0.2,
-                              'train_size': 0.8,
-                              'n_splits': 10,
                               'n_estimators': 10
                               },
                           'ann':
                                {
+                               'hidden_layer_sizes': (50,),
+                               'solver': 'lbfgs'                             
                                }
                           }
+
+# Default parameters for cross validation
+default_cv_parameters = {
+                         'n_splits': 10,
+                         'train_size': 0.8,
+                         'test_size': 0.2
+                         }
 ###########
 ## INPUT ##
 ###########
@@ -100,6 +105,7 @@ def initialize(learner):
         parameters = default_reg_parameters[learner]
     else:
         parameters = default_class_parameters[learner]
+    parameters.update(default_cv_parameters)
     parameters.update(loaded_parameters)        
 
     # Add the random state if there is one
@@ -150,7 +156,7 @@ def initialize(learner):
                 }
     for x in outfiles:
         outfiles[x] = os.path.join(output_dir,outfiles[x].format("_{}".format(learner), oc, output_suffix))
-    outfiles["PERFORMANCE_FILE"] = os.path.join(output_dir,"{}_performance.log".format(model_type))
+    outfiles["PERFORMANCE_FILE"] = os.path.join(output_dir,"{}_{}_performance.log".format(learner,model_type))
 
     # Load the labels and features
     labels_df = load_labels(results)

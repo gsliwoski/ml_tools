@@ -10,6 +10,8 @@
 
 ### Params set if by using default parameters
 
+Note: If supplying a params file, any of these parameters not included will use default here
+
 #### For cross-validation:
 
 - n_splits (default = 10)
@@ -29,4 +31,10 @@
 
 #### For ANN classifier
 
+- hidden_layer_sizes (default = (100,50))
+- solver (default = 'lbfgs')
+
 #### For ANN regressor
+
+- hidden_layer_sizes (default = (100,50))
+- solver (default = 'lbfgs')
