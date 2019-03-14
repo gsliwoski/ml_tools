@@ -3,7 +3,7 @@ import numpy as np
 import sys
 import os
 
-cutoff = 0.95
+cutoff = 0.99
 
 try:
     infilename = sys.argv[1]

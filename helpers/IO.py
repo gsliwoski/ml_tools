@@ -237,7 +237,7 @@ def load_X_y(results, label_df):
         feat_df = pd.read_csv(results.features, sep="\t")
     except:
         sys.exit("Failed to parse feature file {} with pandas".format(results.features))
-    
+    print(list(feat_df))
     assert results.sampleid in list(feat_df), "column {} not found in feature file {}".format(results.sampleid, results.features)
     assert feat_df.shape[0] > 0, "features df is empty"
     assert feat_df.shape[1] > 1, "features file contains no features"

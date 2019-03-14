@@ -16,6 +16,7 @@ from scipy.interpolate import interp1d
 from sklearn import metrics
 from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.model_selection import StratifiedShuffleSplit, ShuffleSplit
+from sklearn import preprocessing
 
 #from IPython.core.debugger import set_trace
 sys.path.append('/dors/capra_lab/users/sliwosgr/ml_tools/helpers/')
@@ -189,9 +190,12 @@ if __name__ == "__main__":
 
     features, labels, parameters, model_type, noopt, outfiles, model_id = IO.initialize('ann')
     
-    # load data
+    # Normalize features (currently minmax but could add flag)
+    scaler = preprocessing.MinMaxScaler()
+    X_norm = pd.DataFrame(scaler.fit_transform(features.values()),
+                          columns = features.columns, index = features.index)
     # train and test
-    metrics_results = run_ann(features, labels, parameters, model_type=='reg')
+    metrics_results = run_ann(X_norm, labels, parameters, model_type=='reg')
 
     # Write test predictions
     IO.write_test_predictions(metrics_results['test_preds'], outfiles['PREDICTIONS_FILE'])    
